@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+befor_install:
+  - docker build -t vikramn/react-test -f ./client/DOckerfile.dev ./client
+script:
+  - docker run vikramn/react-test npm run test -- --coverage
+
+after_success:
+
+  - docker build -t vikramn/multi-client ./client
+  - docker build -t vikramn/multi-nginx ./nginx
+  - docker build -t vikramn/multi-server ./server
+  - docker build -t vikramn/multi-worker ./worker
+    # Log in to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push vikramn/multi-client
+  - docker push vikramn/multi-nginx
+  - docker push vikramn/multi-server
+  - docker push vikramn/multi-worker
