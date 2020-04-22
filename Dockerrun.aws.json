@@ -1,0 +1,36 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefination": [
+    {
+      "name": "client",
+      "image": "vikram1611/multi-client",
+      "hostname": "client",
+      "essential": false
+    },
+    {
+      "name": "server",
+      "image": "vikram1611/multi-server",
+      "hostname": "api",
+      "essential": false
+    },
+    {
+      "name": "worker",
+      "image": "vikram1611/multi-worker",
+      "hostname": "worker",
+      "essential": false
+    },
+    {
+      "name": "nginx",
+      "image": "vikram1611/multi-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+	{
+	  "hostPort": 80,
+	  "containerPort": 80
+        }
+      ],
+      "links": ["client", "server"]
+    }
+  ]
+}
